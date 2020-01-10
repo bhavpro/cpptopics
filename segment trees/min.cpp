@@ -102,16 +102,3 @@ int minarr ::getmin(int ql, int qr, int l = 0, int r = -1, int i = 1)
     return func(lb, rb);
 }
 
-int main()
-{
-    int n;
-    cin >> n;
-    int *arr = new int[n];
-    for (int i = 0; i < n; i++)
-    {
-        cin >> arr[i];
-    }
-    minarr minim(arr, n);
-    cout << minim.getmin(2, 5);
-    delete[] arr;
-}
