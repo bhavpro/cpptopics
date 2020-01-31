@@ -12,10 +12,16 @@ int memo[20][20];
 int to(string init, string final, int i = 0, int j = 0)
 {
     // base
-    if (i == init.length() || j == final.length())
+    if (i == init.length())
     {
-        memo[i][j] == 0;
-        return 0;
+        memo[i][j] = final.length() - j;
+        return memo[i][j];
+    }
+
+    if (j == final.length())
+    {
+        memo[i][j] = init.length() - i;
+        return memo[i][j];
     }
 
     // rec
@@ -24,27 +30,18 @@ int to(string init, string final, int i = 0, int j = 0)
         memo[i][j] = to(init, final, i + 1, j + 1);
         return memo[i][j];
     }
-    else
-    {
-        // insert
-        int a = memo[i][j + 1] == -1 ? to(init, final, i, j + 1) : memo[i][j + 1];
 
-        // delete
-        int b = memo[i + 1][j] == -1 ? to(init, final, i + 1, j) : memo[i + 1][j];
-
-        // replace
-        int c = memo[i + 1][j + 1] == -1 ? to(init, final, i + 1, j + 1) : memo[i + 1][j + 1];
-
-        memo[i][j] = min(a, min(b, c)) + 1;
-        cout << init[i] << " " << final[j] << " " << memo[i][j] << "\n";
-        return memo[i][j];
-    }
+    int a = memo[i][j + 1] == -1 ? to(init, final, i, j + 1) : memo[i][j + 1];
+    int b = memo[i + 1][j] == -1 ? to(init, final, i + 1, j) : memo[i + 1][j];
+    int c = memo[i + 1][j + 1] == -1 ? to(init, final, i + 1, j + 1) : memo[i + 1][j + 1];
+    memo[i][j] = min(a, min(b, c)) + 1;
+    return memo[i][j];
 }
 
 int convertdp(string init, string final)
 {
     // base
-    int dp[10][10];
+    int dp[30][30];
     int len1 = init.length();
     int len2 = final.length();
     for (int i = 0; i <= len1; i++)
