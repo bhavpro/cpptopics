@@ -46,6 +46,23 @@ strv perm(char str[], int n)
     return ans;
 }
 
+strv perm2(char str[], int n)
+{
+    // base
+    if(n == 0)
+    {
+        strv final;
+        final.push_back("");
+        return final;
+    }
+
+    // rec
+    strv prev, final;
+    prev = perm2(str + 1, n - 1);
+    char x = str
+    // adding x
+}
+
 void removedup(strv &str, strv &blank)
 {
     static int i = 0;
@@ -92,6 +109,14 @@ bool lexo(string &a,string &b)
     return false;
 }
 
+bool lexoch(char a,char b)
+{
+    if(a <= b)
+        return true;
+    else
+        return false;
+}
+
 void sortit(strv &str)
 {
     sort(str.begin(), str.end(), lexo);
@@ -99,7 +124,7 @@ void sortit(strv &str)
 
 int main()
 {
-    char arr[8];
+    char arr[10];
     strv str, final;
     cin >> arr;
     int n;
@@ -110,11 +135,12 @@ int main()
             break;
         }
     }
+    sort(arr, arr + n, lexoch);
     str = perm(arr, n);
     if(str.size() > 1)
     {
         removedup(str, final);
-        sortit(final);
+      //  sortit(final);
     }
     else
     {
