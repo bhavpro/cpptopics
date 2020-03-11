@@ -2,6 +2,7 @@
 #include <list>
 #include <vector>
 #include <utility>
+#include <unordered_map>
 
 using namespace std;
 
@@ -12,29 +13,28 @@ class Graph
 {
 public:
     int v, size;
-    bool bidir;
     pair<T, list<T>> *adjlist;
 
-    Graph(int v, bool bidir = true);
+    Graph(int v);
 
     ~Graph()
     {
         delete[] adjlist;
     }
 
-    void addedge(T init, T final);
+    void addedge(T init, T final, bool bidir = true);
     void print();
 };
 
 template <class T>
-Graph<T>::Graph(int v, bool bidir) : v(v), bidir(bidir)
+Graph<T>::Graph(int v) : v(v)
 {
     adjlist = new pair<T, list<T>>[v];
     size = 0;
 }
 
 template <class T>
-void Graph<T>::addedge(T init, T final)
+void Graph<T>::addedge(T init, T final, bool bidir)
 {
     int i;
     for (i = 0; i < size; i++)
@@ -81,7 +81,51 @@ void Graph<T>::print()
 
 } // namespace vectormethod
 
-using namespace vectormethod;
+namespace hashmap
+{
+template <class T>
+class Graph
+{
+public:
+    int v;
+    unordered_map<T, list<T>> adjlist;
+    Graph(int v) : v(v)
+    {
+    }
+
+    ~Graph()
+    {
+    }
+
+    void addedge(T init, T final, bool bidir = true)
+    {
+        adjlist[init].push_back(final);
+        if (bidir == true)
+        {
+            adjlist[final].push_back(init);
+        }
+    }
+
+    void print();
+};
+
+template <class T>
+void Graph<T>::print()
+{
+    for (pair<T, list<T>> element : adjlist)
+    {
+        cout << element.first << " --> ";
+        for (T ele : element.second)
+        {
+            cout << ele << " , ";
+        }
+        cout << "\n";
+    }
+}
+
+} // namespace hashmap
+
+using namespace hashmap;
 
 int main()
 {

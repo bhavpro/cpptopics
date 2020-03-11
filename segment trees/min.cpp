@@ -1,5 +1,7 @@
 #include <iostream>
 #include <limits.h>
+#include <list>
+#include <utility>
 
 using namespace std;
 
@@ -23,9 +25,12 @@ public:
     void set(int arr[], int n);
     int getmin();
     int getmin(int ql, int qr, int l, int r, int i);
+    void update(int index, int val, int l, int r, int i);
+    void showtree();
 };
 
 // private
+
 int minarr ::minranger(int l, int r, int i = 1)
 {
     // base
@@ -64,10 +69,12 @@ void minarr ::set(int arr[], int n)
     oarr = new int[n];
     mn = 4 * n + 1;
     marr = new int[mn];
-    for (int i = 0; i < n; i++)
+    int i;
+    for (i = 0; i < n; i++)
     {
         oarr[i] = arr[i];
     }
+    mn = 2 * (n + 1);
     setmins();
 }
 
@@ -102,3 +109,63 @@ int minarr ::getmin(int ql, int qr, int l = 0, int r = -1, int i = 1)
     return func(lb, rb);
 }
 
+void minarr ::update(int index, int val, int l = 0, int r = -1, int i = 1)
+{
+    if (r == -1)
+    {
+        oarr[index] += val;
+        r = n - 1;
+        update(index, val, l, r, i);
+        return;
+    }
+
+    // base
+    if (l == r && l == index)
+    {
+        marr[i] += val;
+        return;
+    }
+
+    // rec
+    int avg = l + r;
+    avg /= 2;
+    if (index <= avg)
+    {
+        update(index, val, l, avg, 2 * i);
+    }
+    else
+    {
+        update(index, val, avg + 1, r, 2 * i + 1);
+    }
+    marr[i] = func(marr[2 * i], marr[2 * i + 1]);
+    return;
+}
+
+void minarr ::showtree()
+{
+    for (int i = 1; i < mn; i++)
+    {
+        cout << marr[i] << " ";
+    }
+}
+
+int main()
+{
+    int n;
+    n = 6;
+    int *arr = new int[n];
+    arr[0] = 1;
+    arr[1] = 5;
+    arr[2] = 8;
+    arr[3] = 7;
+    arr[4] = 9;
+    arr[5] = 4;
+    minarr minim(arr, n);
+    minim.showtree();
+    minim.update(4, -12);
+    cout << "\n";
+    minim.showtree();
+    cout << "\n";
+    cout << minim.getmin(2, 5);
+    delete[] arr;
+}
