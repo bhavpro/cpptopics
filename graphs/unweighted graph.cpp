@@ -3,6 +3,7 @@
 #include <vector>
 #include <utility>
 #include <unordered_map>
+#include <queue>
 
 using namespace std;
 
@@ -107,6 +108,7 @@ public:
     }
 
     void print();
+    void bfs(T src);
 };
 
 template <class T>
@@ -123,17 +125,48 @@ void Graph<T>::print()
     }
 }
 
+template <class T>
+void Graph<T>::bfs(T src)
+{
+    queue<T> q;
+    unordered_map<T, bool> visited;
+
+    q.push(src);
+    visited[src] = true;
+
+    T temp;
+    list<T> ll;
+
+    while (q.empty() == false)
+    {
+        temp = q.front();
+        q.pop();
+        ll = adjlist[temp];
+        for (T element : ll)
+        {
+            if (visited.count(element) == 0)
+            {
+                q.push(element);
+                visited[element] = true;
+            }
+        }
+        cout << temp << " , ";
+    }
+}
+
 } // namespace hashmap
 
 using namespace hashmap;
 
 int main()
 {
-    Graph<int> g(4);
+    Graph<int> g(6);
     g.addedge(1, 4);
     g.addedge(2, 3);
     g.addedge(1, 2);
     g.addedge(1, 3);
+    g.addedge(5, 6);
     g.print();
+    g.bfs(6);
     return 0;
 }
