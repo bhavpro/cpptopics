@@ -109,6 +109,7 @@ public:
 
     void print();
     void bfs(T src);
+    void sssp(T src);
 };
 
 template <class T>
@@ -154,19 +155,59 @@ void Graph<T>::bfs(T src)
     }
 }
 
+template <class T>
+void Graph<T>::sssp(T src)
+{
+    queue<T> q;
+    unordered_map<T, int> dist;
+
+    q.push(src);
+    dist[src] = 0;
+
+    list<T> ll;
+    T f;
+
+    while (q.empty() == false)
+    {
+        f = q.front();
+        ll = adjlist[f];
+        for (T temp : ll)
+        {
+            if (dist.count(temp) == 0)
+            {
+                q.push(temp);
+                dist[temp] = dist[f] + 1;
+            }
+        }
+        q.pop();
+    }
+
+    cout << '\n';
+
+    for (pair<T, int> temp1 : dist)
+    {
+        cout << temp1.first << " --> " << temp1.second << "\n";
+    }
+}
+
 } // namespace hashmap
 
 using namespace hashmap;
 
 int main()
 {
-    Graph<int> g(6);
-    g.addedge(1, 4);
-    g.addedge(2, 3);
+    Graph<int> g(7);
     g.addedge(1, 2);
+    g.addedge(2, 3);
     g.addedge(1, 3);
-    g.addedge(5, 6);
+    g.addedge(4, 3);
+    g.addedge(4, 7);
+    g.addedge(7, 6);
+    g.addedge(6, 5);
+    g.addedge(3, 5);
+    g.addedge(2, 6);
     g.print();
     g.bfs(6);
+    g.sssp(1);
     return 0;
 }
