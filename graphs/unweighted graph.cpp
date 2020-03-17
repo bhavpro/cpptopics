@@ -4,6 +4,7 @@
 #include <utility>
 #include <unordered_map>
 #include <queue>
+#include <string>
 
 using namespace std;
 
@@ -110,6 +111,10 @@ public:
     void print();
     void bfs(T src);
     void sssp(T src);
+    void dfs();
+    void dfshelper(T src, unordered_map<T, bool> &visited);
+    void dfsdirected();
+    void dfsdirectedhelper(T, unordered_map<T, bool> &, list<T> &);
 };
 
 template <class T>
@@ -190,24 +195,99 @@ void Graph<T>::sssp(T src)
     }
 }
 
+template <class T>
+void Graph<T>::dfs()
+{
+    unordered_map<T, bool> visited;
+    int comp = 0;
+    T src;
+    cout << "\n";
+    for (pair<T, list<T>> p : adjlist)
+    {
+        src = p.first;
+        if (visited.count(src) == 0)
+        {
+            comp++;
+            dfshelper(src, visited);
+            cout << "\n";
+        }
+    }
+    cout << "\ncurrent graph has " << comp << " components";
+}
+
+template <class T>
+void Graph<T>::dfshelper(T src, unordered_map<T, bool> &visited)
+{
+    // base
+    if (visited.count(src) > 0)
+    {
+        return;
+    }
+
+    // rec
+    cout << src << " , ";
+    visited[src] = true;
+    list<T> ll = adjlist[src];
+    for (T temp : ll)
+    {
+        dfshelper(temp, visited);
+    }
+}
+
+template <class T>
+void Graph<T>::dfsdirected()
+{
+    unordered_map<T, bool> visited;
+    list<T> ordering;
+    for (pair<T, list<T>> temp : adjlist)
+    {
+        if (visited[temp.first] == false)
+        {
+            dfsdirectedhelper(temp.first, visited, ordering);
+        }
+    }
+    typename list<T>::iterator ptr,end;
+    end = ordering.end();
+    for (ptr = ordering.begin(); ptr != end; ptr++)
+    {
+        cout << *ptr << " --> ";
+    }
+}
+
+template <class T>
+void Graph<T>::dfsdirectedhelper(T src, unordered_map<T, bool> &visited, list<T> &ordering)
+{
+    for (T ele : adjlist[src])
+    {
+        if (visited[ele] == false)
+        {
+            dfsdirectedhelper(ele, visited, ordering);
+        }
+    }
+    visited[src] = true;
+    ordering.push_front(src);
+}
+
 } // namespace hashmap
 
 using namespace hashmap;
 
 int main()
 {
-    Graph<int> g(7);
-    g.addedge(1, 2);
-    g.addedge(2, 3);
-    g.addedge(1, 3);
-    g.addedge(4, 3);
-    g.addedge(4, 7);
-    g.addedge(7, 6);
-    g.addedge(6, 5);
-    g.addedge(3, 5);
-    g.addedge(2, 6);
+    Graph<string> g(7);
+    g.addedge("English", "Programming", false);
+    g.addedge("Maths", "Programming", false);
+    g.addedge("Programming", "HTML", false);
+    g.addedge("Programming", "Python", false);
+    g.addedge("Programming", "Java", false);
+    g.addedge("Programming", "JS", false);
+    g.addedge("Python", "Web Dev", false);
+    g.addedge("HTML", "CSS", false);
+    g.addedge("CSS", "JS", false);
+    g.addedge("JS", "Web Dev", false);
+    g.addedge("Java", "Web Dev", false);
     g.print();
-    g.bfs(6);
-    g.sssp(1);
+    cout << "\n";
+    g.dfsdirected();
     return 0;
 }

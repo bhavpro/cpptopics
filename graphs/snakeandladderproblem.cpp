@@ -203,13 +203,6 @@ void Graph<T>::sssp(T src, T dest)
     }
 }
 
-template <class T>
-void Graph<T>::dfs(T src)
-{
-    unordered_map<T, bool> visited;
-    dfshelper(src, visited);
-}
-
 } // namespace hashmap
 
 using namespace hashmap;
