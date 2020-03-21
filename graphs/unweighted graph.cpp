@@ -83,6 +83,8 @@ void Graph<T>::print()
 
 } // namespace vectormethod
 
+//###############################################################################
+
 namespace hashmap
 {
 template <class T>
@@ -115,6 +117,7 @@ public:
     void dfshelper(T src, unordered_map<T, bool> &visited);
     void dfsdirected();
     void dfsdirectedhelper(T, unordered_map<T, bool> &, list<T> &);
+    void bfstopology();
 };
 
 template <class T>
@@ -246,7 +249,7 @@ void Graph<T>::dfsdirected()
             dfsdirectedhelper(temp.first, visited, ordering);
         }
     }
-    typename list<T>::iterator ptr,end;
+    typename list<T>::iterator ptr, end;
     end = ordering.end();
     for (ptr = ordering.begin(); ptr != end; ptr++)
     {
@@ -266,6 +269,55 @@ void Graph<T>::dfsdirectedhelper(T src, unordered_map<T, bool> &visited, list<T>
     }
     visited[src] = true;
     ordering.push_front(src);
+}
+
+template <class T>
+void Graph<T>::bfstopology()
+{
+    // initialize
+    unordered_map<T, bool> visited;
+    unordered_map<T, int> indegree;
+    for (pair<T, list<T>> element : adjlist)
+    {
+        visited[element.first] = false;
+        indegree[element.first] = 0;
+    }
+
+    // set indegree
+    for (pair<T, list<T>> element : adjlist)
+    {
+        for (T ele : element.second)
+        {
+            indegree[ele]++;
+        }
+    }
+
+    queue<T> q;
+    // pushing elements with indegree 0
+    for (pair<T, int> element : indegree)
+    {
+        if (element.second == 0)
+        {
+            q.push(element.first);
+            visited[element.first] = true;
+        }
+    }
+
+    while (!q.empty())
+    {
+        T temp = q.front();
+        for (T child : adjlist[temp])
+        {
+            indegree[child]--;
+            if (indegree[child] == 0 && visited[child] == false)
+            {
+                q.push(child);
+                visited[child] = true;
+            }
+        }
+        cout << temp << " --> ";
+        q.pop();
+    }
 }
 
 } // namespace hashmap
@@ -288,6 +340,6 @@ int main()
     g.addedge("Java", "Web Dev", false);
     g.print();
     cout << "\n";
-    g.dfsdirected();
+    g.bfstopology();
     return 0;
 }
