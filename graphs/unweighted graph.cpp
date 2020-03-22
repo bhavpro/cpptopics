@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <queue>
 #include <string>
+#include <map>
 
 using namespace std;
 
@@ -118,6 +119,10 @@ public:
     void dfsdirected();
     void dfsdirectedhelper(T, unordered_map<T, bool> &, list<T> &);
     void bfstopology();
+    bool iscyclicbfsundir();
+    bool iscyclicdfsundir();
+    bool iscyclicdfsdir();
+    bool dfscyclichelper(T, map<T, bool> &);
 };
 
 template <class T>
@@ -320,12 +325,85 @@ void Graph<T>::bfstopology()
     }
 }
 
+template <class T>
+bool Graph<T>::iscyclicbfsundir()
+{
+    queue<T> q;
+    unordered_map<T, T> parent;
+    unordered_map<T, bool> visited;
+
+    for (pair<T, list<T>> node : adjlist)
+    {
+        if (visited[node.first] == false)
+        {
+            q.push(node.first);
+            visited[node.first] = true;
+            parent[node.first] = node.first;
+        }
+        while (!q.empty())
+        {
+            for (T child : adjlist[q.front()])
+            {
+                if (child != parent[q.front()])
+                {
+                    if (visited[child] == true)
+                        return true;
+                    q.push(child);
+                    visited[child] = true;
+                    parent[child] = q.front();
+                }
+            }
+        }
+    }
+    return false;
+}
+
+template <class T>
+bool Graph<T>::iscyclicdfsdir()
+{
+    map<T, bool> visited;
+
+    for (pair<T, list<T>> temp : adjlist)
+    {
+        if (!visited[temp.first])
+            if (dfscyclichelper(temp.first, visited))
+                return true;
+    }
+
+    return false;
+}
+
+template <class T>
+bool Graph<T>::dfscyclichelper(T src, map<T, bool> &visited)
+{
+    static map<T, bool> being;
+
+    // base
+    if (being[src] == true)
+        return true;
+
+    // rec
+    being[src] = true;
+    visited[src] = true;
+    for (T temp : adjlist[src])
+    {
+        if (!visited[temp])
+        {
+            if (dfscyclichelper(temp, visited))
+                return true;
+        }
+    }
+    being[src] = false;
+    return false;
+}
+
 } // namespace hashmap
 
 using namespace hashmap;
 
 int main()
 {
+    /*
     Graph<string> g(7);
     g.addedge("English", "Programming", false);
     g.addedge("Maths", "Programming", false);
@@ -338,8 +416,15 @@ int main()
     g.addedge("CSS", "JS", false);
     g.addedge("JS", "Web Dev", false);
     g.addedge("Java", "Web Dev", false);
+    */
+    Graph<int> g(8);
+    g.addedge(1, 2, false);
+    g.addedge(2, 3, false);
+    g.addedge(3, 4, false);
+    g.addedge(4, 5, false);
+    g.addedge(5, 6, false);
     g.print();
     cout << "\n";
-    g.bfstopology();
+    cout << g.iscyclicdfsdir();
     return 0;
 }
