@@ -48,7 +48,6 @@ int main()
 {
     vector<int> *a = bitsetsieve();
     long long num;
-    cout << "nuw";
     cin >> num;
     cout << checklarge(num, *a);
 

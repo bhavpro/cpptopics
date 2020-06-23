@@ -1,50 +1,45 @@
 #include <iostream>
+#include <bitset>
+#include <vector>
 
 using namespace std;
 
-const int n = 999999;
+int n = 10000000;
+bitset<10000004> bitarr;
 
-void optimisedsieve(bool arr[1000000])
+void bitsetsieve(vector<int> &arr)
 {
-    arr[1] = arr[0] = 0;
+    bitarr.set();
+    bitarr[0] = bitarr[1] = 0;
+    arr.push_back(0);
+    arr.push_back(0);
     for (int i = 2; i <= n; i++)
     {
-        if (arr[i] == 1)
+        if (bitarr[i] == 1)
         {
-            if (i % 2 == 0 && i != 2) // even
+            arr.push_back(*(arr.end() - 1) + 1);
+            for (long long j = (long long)i * i; j <= n; j += i)
             {
-                arr[i] = 0;
+                bitarr[j] = 0;
             }
-
-            for (int j = i * i; j <= n && j >= 0; j += i)
-            {
-                arr[j] = 0;
-            }
+        }
+        else
+        {
+            arr.push_back(*(arr.end() - 1));
         }
     }
 }
 
 int main()
 {
-    bool sieve[1000000];
-    int cs[1000000];
-    int t;
+    int t, a, b;
+    vector<int> csum;
+    bitsetsieve(csum);
     cin >> t;
-    for (int i = 0; i <= n; i++)
-    {
-        sieve[i] = 1;
-    }
-    optimisedsieve(sieve);
-    cs[0] = 0;
-    for (int i = 1; i <= n; i++)
-    {
-        cs[i] = cs[i - 1] + sieve[i];
-    }
     while (t > 0)
     {
-        int a, b;
         cin >> a >> b;
-        cout << cs[b] - cs[a - 1];
+        cout << csum[b] - csum[a - 1];
         t--;
     }
     return 0;
