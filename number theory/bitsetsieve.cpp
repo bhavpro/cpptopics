@@ -12,7 +12,6 @@ vector<int> *bitsetsieve()
     vector<int> *ans = new vector<int>;
     arr.set();
     arr[0] = arr[1] = 0;
-    (*ans).push_back(2);
     for (int i = 2; i <= n; i++)
     {
         if (arr[i] == 0)
