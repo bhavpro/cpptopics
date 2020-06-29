@@ -82,15 +82,89 @@ int inversefactmodcomposite(int x, int mod)
     return ans;
 }
 
+int factmod(int h, int l, int mod)
+{
+    long long ans = 1;
+    for (int i = h; i >= l; i--)
+    {
+        ans = (ans * (i % mod)) % mod;
+    }
+    return ans;
+}
+
+int _2nCn(int n, int mod)
+{
+    long long num = factmod(2 * n, n + 1, mod);
+    int denominv;
+    if (mod == 1681)
+    {
+        denominv = inversefactmodcomposite(n, mod);
+    }
+    else
+    {
+        denominv = inversefactmodprime(n, mod);
+    }
+    num = num * denominv;
+    num %= mod;
+    return num;
+}
+
+int chineserem3(int m1, int r1, int m2, int r2, int m3, int r3)
+{
+    int prod = m1 * m2 * m3;
+    long long sum = 0;
+    int pp1, pp2, pp3;
+    int inv1, inv2, inv3;
+    pp1 = prod / m1;
+    pp2 = prod / m2;
+    pp3 = prod / m3;
+    inv1 = 1;
+    inv2 = calcinverse(pp2, m2);
+    inv3 = powmod(pp3, m3 - 2, m3);
+    sum += (r1 * pp1 * inv1) % prod;
+    sum %= prod;
+    sum += (r2 * pp2 * inv2) % prod;
+    sum %= prod;
+    sum += (r3 * pp3 * inv3) % prod;
+    sum %= prod;
+    return sum;
+}
+
+int chineserem2(int m1, int r1, int m2, int r2)
+{
+    int prod = m1 * m2;
+    int pp1, pp2;
+    int inv1, inv2;
+    pp1 = prod / m1;
+    pp2 = prod / m2;
+    inv1 = 1;
+    inv2 = powmod(pp2, m2 - 2, m2);
+    long long sum = 0;
+    sum += (r1 * pp1 * inv1) % prod;
+    sum %= prod;
+    sum += (r2 * pp2 * inv2) % prod;
+    sum %= prod;
+    return sum;
+}
+
 int powpow2(int a, int b, int n)
 {
-    int ans = 1;
+    cout << "here"<<flush;
+    int r1 = _2nCn(n, 2);
+    int r3 = _2nCn(n, 148721);
+    int r2 = _2nCn(n, 1681);
+    int exp = chineserem3(2, r1, 1681, r2, 148721, r3);
+    int r4 = powmod(b, exp, 2);
+    int r5 = powmod(b, exp, 500000003);
+    int bexp = chineserem2(2, r4, 500000003, r5);
+    return powmod(a, bexp, ::mod);
 
-    return ans;
+    //return ans;
 }
 
 int main()
 {
+
     int a, b, n;
     cout << "\na : ";
     cin >> a;
@@ -99,5 +173,6 @@ int main()
     cout << "\nn : ";
     cin >> n;
     cout << powpow2(a, b, n);
+
     return 0;
 }
