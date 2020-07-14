@@ -72,5 +72,14 @@ int main()
 
     //it4();
     // cout << a;
+
+    auto it5 = [&, a]() mutable -> int {
+        cout << a++;
+        b++;
+        return a;
+    };
+
+    cout << it5();
+    cout << b;;
     return 0;
 }
