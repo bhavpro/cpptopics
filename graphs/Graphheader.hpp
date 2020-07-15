@@ -16,9 +16,13 @@ public:
     {
     }
 
-    void addedge(T u, T v, bool bidir = true);
+    void addedge(T, T, bool bidir = true);
     void print();
     void bfs();
     void dfs();
-
+    void dfshelper(T, map<T, bool> &);
+    void ssspbfs(T src);
+    void dfstoposort();
+    void dfstoposorthelper(T, map<T, bool> &, list<T> &);
+    void bfstoposort();
 };
