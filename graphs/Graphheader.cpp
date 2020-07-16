@@ -212,3 +212,52 @@ void Graph<T>::bfstoposort()
         cout << front << " --> ";
     }
 }
+
+template <class T>
+bool Graph<T>::iscyclicbfsundir()
+{
+    queue<T> q;
+    map<T, bool> visited;
+    map<T, T> parent;
+
+    for (auto node : adjlist)
+    {
+        if (!visited[node.first])
+        {
+            visited[node.first] = true;
+            parent[node.first] = node.first;
+            q.push(node.first);
+
+            while (!q.empty())
+            {
+                for (T child : adjlist[q.front()])
+                {
+                    if (!visited[child])
+                    {
+                        q.push(child);
+                        visited[child] = true;
+                        parent[child] = q.front();
+                    }
+                    else
+                    {
+                        if (parent[q.front()] != child)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return false;
+}
+
+template <class T>
+void Graph<T>::iscyclicdfsdir()
+{
+}
+
+template <class T>
+void Graph<T>::iscyclicdfsdirhelper()
+{
+}

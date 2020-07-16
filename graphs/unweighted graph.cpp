@@ -120,7 +120,6 @@ public:
     void dfsdirectedhelper(T, unordered_map<T, bool> &, list<T> &);
     void bfstopology();
     bool iscyclicbfsundir();
-    bool iscyclicdfsundir();
     bool iscyclicdfsdir();
     bool dfscyclichelper(T, map<T, bool> &);
 };
@@ -368,6 +367,7 @@ bool Graph<T>::iscyclicdfsdir()
         if (!visited[temp.first])
             if (dfscyclichelper(temp.first, visited))
                 return true;
+                
     }
 
     return false;
@@ -402,7 +402,7 @@ bool Graph<T>::dfscyclichelper(T src, map<T, bool> &visited)
 using namespace hashmap;
 
 int main()
-{
+{ 
     /*
     Graph<string> g(7);
     g.addedge("English", "Programming", false);

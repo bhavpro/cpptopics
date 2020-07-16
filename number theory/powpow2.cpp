@@ -2,7 +2,28 @@
 
 using namespace std;
 
-int mod = 1000000007;
+const int mod = 1000000007;
+
+int arr[mod][mod];
+
+int rec2ncn(int n, int r, int mod)
+{
+    // base
+    if (r == 1)
+    {
+        return n;
+    }
+
+    if (r == 0 or n == r)
+    {
+        return 1;
+    }
+
+    // rec
+    int a = rec2ncn(n - 1, r, mod);
+    int b = rec2ncn(n - 1, r - 1, mod);
+    return ((long long)a + (long long)b) % mod;
+}
 
 int powmod(int a, int p, int mod)
 {
@@ -149,30 +170,31 @@ int chineserem2(int m1, int r1, int m2, int r2)
 
 int powpow2(int a, int b, int n)
 {
-    cout << "here"<<flush;
-    int r1 = _2nCn(n, 2);
-    int r3 = _2nCn(n, 148721);
-    int r2 = _2nCn(n, 1681);
+    int r1 = rec2ncn(2 * n, n, 2);
+    int r3 = rec2ncn(2 * n, n, 148721);
+    int r2 = rec2ncn(2 * n, n, 1681);
     int exp = chineserem3(2, r1, 1681, r2, 148721, r3);
     int r4 = powmod(b, exp, 2);
     int r5 = powmod(b, exp, 500000003);
     int bexp = chineserem2(2, r4, 500000003, r5);
     return powmod(a, bexp, ::mod);
-
-    //return ans;
 }
 
 int main()
 {
 
-    int a, b, n;
-    cout << "\na : ";
-    cin >> a;
-    cout << "\nb : ";
-    cin >> b;
-    cout << "\nn : ";
-    cin >> n;
-    cout << powpow2(a, b, n);
+    int a, b, n, t;
+    cin >> t;
+    for (int i = 0; i < mod; i++)
+    {
+        arr[mod][0] = 1;
+    }
+    for(int i =0;)
+    while (t--)
+    {
+        cin >> a >> b >> n;
+        cout << powpow2(a, b, n);
+    }
 
     return 0;
 }
