@@ -31,7 +31,9 @@ void dldfs(int cur, int par)
         {
             dldfs(child, cur);
             low[cur] = min(low[cur], low[child]);
-            if (low[child] >= disc[cur])
+            noofchild++;
+
+            if (par != 0 && low[child] >= disc[cur])
             {
                 ap.insert(cur);
             }
@@ -39,13 +41,17 @@ void dldfs(int cur, int par)
             {
                 bridges.push_back(make_pair(cur, child));
             }
-            noofchild++;
         }
         // back edge
         else if (child != par)
         {
             low[cur] = min(disc[child], low[cur]);
         }
+    }
+
+    if (noofchild >= 2 && par == 0)
+    {
+        ap.insert(cur);
     }
 }
 
