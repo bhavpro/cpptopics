@@ -322,7 +322,7 @@ void Graph<T>::bfstopology()
         cout << temp << " --> ";
         q.pop();
     }
-}
+}6
 
 template <class T>
 bool Graph<T>::iscyclicbfsundir()

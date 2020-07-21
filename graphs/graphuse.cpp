@@ -6,8 +6,8 @@ using namespace std;
 
 int main()
 {
-    
-    Graph<int> g;
+
+    /*Graph<int> g; 
     g.addedge(1, 0);
     g.addedge(1, 2);
     g.addedge(2, 4);
@@ -18,7 +18,7 @@ int main()
 
     g.addedge(6, 7);
     g.addedge(6, 8);
-    /*
+    */
 
     Graph<string> g;
     g.addedge("English", "Programming", false);
@@ -33,7 +33,6 @@ int main()
     g.addedge("JS", "Web Dev", false);
     g.addedge("Java", "Web Dev", false);
     g.print();
-    g.bfstoposort();*/
-    cout << g.iscyclicbfsundir();
+    cout << g.iscyclicdfsdir();
     return 0;
 }

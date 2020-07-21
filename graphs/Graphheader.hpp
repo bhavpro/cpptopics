@@ -26,6 +26,6 @@ public:
     void dfstoposorthelper(T, map<T, bool> &, list<T> &);
     void bfstoposort();
     bool iscyclicbfsundir();
-    void iscyclicdfsdir();
-    void iscyclicdfsdirhelper();
+    bool iscyclicdfsdir();
+    bool iscyclicdfsdirhelper(T, map<T, bool> &);
 };

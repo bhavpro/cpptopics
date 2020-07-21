@@ -253,11 +253,49 @@ bool Graph<T>::iscyclicbfsundir()
 }
 
 template <class T>
-void Graph<T>::iscyclicdfsdir()
+bool Graph<T>::iscyclicdfsdir()
 {
+    map<T, bool> visited;
+
+    for (pair<T, list<T>> ele : adjlist)
+    {
+        if (!visited[ele.first])
+        {
+            if (iscyclicdfsdirhelper(ele.first, visited))
+            {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 template <class T>
-void Graph<T>::iscyclicdfsdirhelper()
+bool Graph<T>::iscyclicdfsdirhelper(T src, map<T, bool> &visited)
 {
+    static map<T, bool> being;
+    // base
+
+    // rec
+    being[src] = true;
+    visited[src] = true;
+    for (T child : adjlist[src])
+    {
+        if (!visited[child])
+        {
+            if (iscyclicdfsdirhelper(child, visited))
+            {
+                return true;
+            }
+        }
+        else
+        {
+            if (being[child])
+            {
+                return true;
+            }
+        }
+    }
+    being[src] = false;
+    return false;
 }
