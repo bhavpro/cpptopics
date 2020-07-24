@@ -2,34 +2,52 @@
 
 using namespace std;
 
-int rr, cc;
-
-int solvedprd(const vector<vector<int>> &garden, int sx, int sy, int ex, int ey)
+int solvedprd(vector<vector<int>> &garden, int sx, int sy, int ex, int ey)
 {
-    int r = ex - sx;
-    int c = ey - sy;
-    vector<vector<int>> dp(rr + 1, vector<int>(cc + 1, 0));
-    for (int i = sx; i <= ex; i++)
+
+    int r = ex - sx + 1;
+    int c = ey - sy + 1;
+    vector<vector<int>> dp(r, vector<int>(c, 0));
+    for (int i = 0; i < r; i++)
     {
-        for (int j = sy; j <= ey; j++)
+        for (int j = 0; j < c; j++)
         {
-            if (i == sx && j == sy)
+            if (i == 0 && j == 0)
             {
-                dp[i][j] = garden[i][j];
+                dp[i][j] = garden[i + sx][j + sy];
                 continue;
             }
-            
+            dp[i][j] = max((i != 0 ? dp[i - 1][j] : 0), (j != 0 ? dp[i][j - 1] : 0));
+            dp[i][j] += garden[i + sx][j + sy];
         }
     }
+    return dp[r - 1][c - 1];
 }
 
-int solvedpru(const vector<vector<int>> &garden, int sx, int sy, int ex, int ey)
+int solvedpru(vector<vector<int>> &garden, int sx, int sy, int ex, int ey)
 {
+
+    int r = sx - ex + 1;
+    int c = ey - sy + 1;
+    vector<vector<int>> dp(r, vector<int>(c, 0));
+    for (int i = r - 1; i >= 0; i--)
+    {
+        for (int j = 0; j < c; j++)
+        {
+            if (i == r - 1 && j == 0)
+            {
+                dp[i][j] = garden[sx - i][j + sy];
+                continue;
+            }
+            dp[i][j] = max((i == r - 1 ? 0 : dp[i + 1][j]), (j == 0 ? 0 : dp[i][j - 1]));
+            dp[i][j] += garden[sx - i][j + sy];
+        }
+    }
+    return dp[0][c - 1];
 }
 
-int solve(vector<vector<int>> garden, int i, int j)
+int solve(vector<vector<int>> garden, int i, int j, int r, int c)
 {
-    int r, c;
     // boy at top
     int sol1 = solvedprd(garden, 1, 1, i - 1, j);
     int sol2 = solvedprd(garden, i + 1, j, r, c);
@@ -49,8 +67,6 @@ int main()
 {
     int r, c;
     r = c = 3;
-    rr = r;
-    cc = c;
     vector<vector<int>> garden(r + 1, vector<int>(c + 1, -1));
     for (int i = 1; i <= 3; i++)
     {
@@ -63,7 +79,7 @@ int main()
     {
         for (int j = 2; j <= c - 1; j++)
         {
-            ans = max(ans, solve(garden, i, j));
+            ans = max(ans, solve(garden, i, j, r, c));
         }
     }
     cout << ans;
