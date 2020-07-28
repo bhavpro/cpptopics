@@ -84,6 +84,19 @@ void getchild(node *root, int n)
         getchild(root->right, n);
     }
 }
+void del(node *root)
+{
+    // base
+    if (root == NULL)
+    {
+        return;
+    }
+
+    // rec
+    del(root->left);
+    del(root->right);
+    delete root;
+}
 
 int main()
 {
@@ -92,5 +105,6 @@ int main()
     node *root = insert(arr, 0, n - 1);
     print(root);
     cout << "\n";
+    del(root);
     return 0;
 }
