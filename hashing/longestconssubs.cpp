@@ -83,10 +83,40 @@ int lcs2(int *a, int n)
     return max;
 }
 
+int lcs3(int *a, int n)
+{
+    unordered_map<int, bool> isthere;
+    for (int i = 0; i < n; i++)
+    {
+        isthere[a[i]] = true;
+    }
+    int max = 0;
+    for (int i = 0; i < n; i++)
+    {
+        int ele = a[i];
+        if (isthere[ele - 1] == true)
+        {
+            continue;
+        }
+        else
+        {
+            int count = 0;
+            int x = ele;
+            while (isthere[x] == true)
+            {
+                x++;
+                count++;
+            }
+            max = ::max(max, count);
+        }
+    }
+    return max;
+}
+
 int main()
 {
-    int a[] = {10, 4, 20, 1, 3, 6, 5, 19};
+    int a[] = {10, 4, 20, 1, 3, 6, 5,7,19};
     int n = sizeof(a) / sizeof(int);
-    cout << lcs2(a, n);
+    cout << lcs3(a, n);
     return 0;
 }
