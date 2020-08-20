@@ -51,7 +51,7 @@ public:
         {
             Edge cure = ea[i];
             int tempdist = dist[cure.src] + cure.wt;
-            if (tempdist < dist[cure.dest])
+            if (tempdist <  dist[cure.dest])
                 negc = 1;
         }
         if (!negc)

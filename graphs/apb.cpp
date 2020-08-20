@@ -55,6 +55,11 @@ void dldfs(int cur, int par)
     }
 }
 
+int shortest(int cur)
+{
+
+}
+
 int main()
 {
     insert(1, 2);
@@ -71,5 +76,7 @@ int main()
     dldfs(1, 0);
     for (int x : ap)
         cout << x << " ";
+
+        
     return 0;
 }

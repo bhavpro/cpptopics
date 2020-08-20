@@ -75,7 +75,7 @@ void isstongly(int n, int e)
 
 int main()
 {
-     freopen("input.txt", "r", stdin);
+    freopen("input.txt", "r", stdin);
     int n, e;
     cin >> n >> e;
     for (int i = 0; i < e; i++)
