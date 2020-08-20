@@ -8,7 +8,10 @@ vector<int> ap;
 vector<pair<int, int>> bridge;
 vector<int> low;
 vector<int> disc;
+bitset<N> col;
+bitset<N> vis;
 int t = 0;
+vector<int> dist(N);
 
 void insert(int a, int b)
 {
@@ -56,21 +59,85 @@ void dldfs(int cur, int par)
     }
 }
 
+bool bipardfs(int cur, int par, bool col)
+{
+    // base
+
+    // rec
+    vis[cur] = 1;
+    ::col[cur] = col;
+    for (auto ch : g[cur])
+    {
+        if (!vis[ch])
+        {
+            if (!bipardfs(ch, cur, !col))
+            {
+                return false;
+            }
+        }
+        else if (par != ch)
+        {
+            if (::col[ch] == ::col[cur])
+            {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+int shortest()
+{
+    int mind = INT_MAX;
+    for (int i = 1; i <= 6; i++)
+    {
+        vis.reset();
+        for (int j = 0; j < 10; j++)
+        {
+            dist[j] = 0;
+        }
+        queue<pair<int, int>> q;
+        q.push({i, 0});
+        dist[i] = 0;
+        while (!q.empty())
+        {
+            auto f = q.front();
+            q.pop();
+            for (int ch : g[f.first])
+            {
+                if (!vis[ch])
+                {
+                    q.push({ch, f.first});
+                    dist[ch] = dist[f.first] + 1;
+                    vis[ch] = 1;
+                }
+                else if (ch != f.second)
+                {
+                    mind = min(mind, dist[ch] + dist[f.first] + 1);
+                }
+            }
+        }
+    }
+    return mind;
+}
+
+
+
 int main()
 {
     insert(1, 2);
     insert(2, 3);
-    insert(1, 3);
-    insert(3, 4);
+    insert(2, 4);
+    insert(3, 5);
     insert(4, 5);
-    insert(4, 8);
+    insert(4, 6);
     insert(6, 5);
-    insert(6, 7);
-    insert(4, 7);
-
-    t = 0;
-    dldfs(1, 0);
-    for (int x : ap)
-        cout << x << " ";
+    //insert(6, 7);
+    //insert(4, 7);
+    //   t = 0;
+    // dldfs(1, 0);
+    // for (int x : ap)
+    //   cout << x << " ";
+    //cout << bipardfs(1, 0, 0);
+    cout << shortest();
     return 0;
 }
