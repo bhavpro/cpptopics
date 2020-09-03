@@ -54,29 +54,25 @@ void dldfs(int cur, int par)
         ap.insert(cur);
     }
 }
-
-int shortest(int cur)
-{
-
-}
-
 int main()
 {
     insert(1, 2);
     insert(2, 3);
-    insert(1, 3);
-    insert(3, 4);
-    insert(4, 5);
-    insert(4, 8);
-    insert(6, 5);
-    insert(6, 7);
-    insert(4, 7);
+    insert(4, 3);
+    insert(7, 4);
+    insert(7, 10);
+    insert(4, 10);
+    insert(3, 5);
+    insert(5, 8);
+    insert(3, 8);
+    insert(3, 6);
+    insert(6, 9);
+    insert(9, 2);
 
     t = 0;
     dldfs(1, 0);
     for (int x : ap)
         cout << x << " ";
 
-        
     return 0;
 }
