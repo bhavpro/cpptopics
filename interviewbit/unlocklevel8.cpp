@@ -32,15 +32,5 @@ vector<TreeNode *> makebst(int root, set<int> &avail)
 
 vector<TreeNode *> generateTrees(int A)
 {
-    set<int> avail;
-    vector<TreeNode *> ans;
-    for (int i = 1; i <= A; i++)
-    {
-        avail.insert(i);
-    }
-    for (int i = 1; i <= A; i++)
-    {
-        vector<TreeNode *> temp = (makebst(i, avail));
-    }
-    return ans;
+    
 }
