@@ -2,53 +2,50 @@
 
 using namespace std;
 
-vector<int> repeatedNumber(const vector<int> &A)
+
+vector<int> repeatedNumberop(const vector<int> &A)
 {
     int n = A.size();
-    int xorof2 = 0;
-    long long sumarr = 0, sum1ton = 0;
-
-    for (int i = 0; i < A.size(); i++)
-    {
-        xorof2 ^= A[i];
-        sumarr += A[i]
-    }
+    int xorof1n = 0;
+    int xorofarr = 0;
+    long long sumofarr = 0, sumof1n = 0;
     for (int i = 1; i <= n; i++)
     {
-        xorof2 ^= i;
-        sum1ton += A[i];
+        xorof1n ^= i;
+        xorofarr ^= A[i - 1];
+        sumof1n += i;
+        sumofarr += A[i - 1];
     }
-    int temp = xorof2;
-    int distinctbit = 0;
-    while (temp != 0)
+
+    int xorof2 = xorof1n ^ xorofarr;
+    int mask;
+    for (int i = 0; i < sizeof(int) * 8; i++)
     {
-        if (temp & 1)
+        mask = 1 << i;
+        if (mask & xorof2)
+        {
             break;
-        distinctbit++;
-        temp >>= 1;
+        }
     }
 
-    int xordb1 = 0, xordb0 = 0;
-    for (int i = 0; i < A.size(); i++)
-        if (A[i] & (1 << distinctbit))
-            xordb1 ^= A[i];
-        else
-            xordb0 ^= A[i];
-
+    int tempxor = 0;
     for (int i = 1; i <= n; i++)
-        if (A[i] & (1 << distinctbit))
-            xordb1 ^= A[i];
-        else
-            xordb0 ^= A[i];
-
-    int num1 = xordb0 ^ xorof2;
-    int num2 = xordb1 ^ xorof2;
-
-    if (sumarr - sum1ton != num1 - num2)
     {
-        int temp = num1;
-        num1 = num2;
-        num2 = temp;
+        if (mask & A[i - 1])
+            tempxor ^= A[i - 1];
+        if (mask & i)
+            tempxor ^= i;
     }
-    return vector<int>({num1, num2});
+
+    int num1 = tempxor;       // missing assume
+    int num2 = num1 ^ xorof2; // dup assume
+
+    if (sumof1n - sumofarr == num1 - num2)
+    {
+        return {num2, num1};
+    }
+    else
+    {
+        return {num1, num2};
+    }
 }

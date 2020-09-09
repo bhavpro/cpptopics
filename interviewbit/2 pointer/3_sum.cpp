@@ -131,3 +131,33 @@ int threeSumClosest(vector<int> &A, int B)
     }
     return minsum;
 }
+
+int threeSumClosestend(vector<int> &A, int B)
+{
+    sort(A.begin(), A.end());
+    int n = A.size();
+    long long maxsum = -1, sum;
+    long long mindiff = INT_MAX;
+    for (int i = 0; i < n - 2; i++)
+    {
+        int target = B - A[i];
+        int j = i + 1;
+        int k = n - 1;
+        while (j < k)
+        {
+            sum = A[j] + A[k];
+            long long diff = abs(sum - target);
+            if (diff < mindiff)
+            {
+                mindiff = diff;
+                maxsum = A[i] + A[j] + A[k];
+            }
+
+            if (sum < target)
+                j++;
+            else
+                k--;
+        }
+    }
+    return maxsum;
+}
