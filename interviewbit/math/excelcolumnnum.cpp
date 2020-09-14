@@ -4,10 +4,20 @@ using namespace std;
 
 int titleToNumber(string A)
 {
-    if (A.size() == 0)
-        return 0;
-    if (A.size() == 1)
+    int num = 0;
+    int power = 1;
+    for (int i = A.size() - 1; i >= 0; i--)
     {
-        return A[0]-
+        num += power * (A[i] - 'A' + 1);
+        power *= 26;
     }
+
+    return num;
+}
+
+int main()
+{
+    string a;
+    cin >> a;
+    cout << titleToNumber(a);
 }

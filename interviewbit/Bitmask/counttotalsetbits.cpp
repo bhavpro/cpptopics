@@ -35,6 +35,35 @@ int s1(int a)
     return sum;
 }
 
+int soln(int a)
+{
+    if (a <= 1)
+        return a;
+    if (a <= 3)
+        return a - 1;
+
+    int mod = 1e9 + 7;
+    long long ans = 4;
+    long long till = 4;
+
+    while (till <= a)
+    {
+        if (a < (till << 1))
+            break;
+        ans <<= 1;
+        ans += till;
+        ans %= mod;
+        till <<= 1;
+    }
+
+    for (int i = till; i <= a; i++)
+    {
+        ans += __builtin_popcount(i);
+        ans %= mod;
+    }
+    return ans;
+}
+
 int main()
 {
     int a;

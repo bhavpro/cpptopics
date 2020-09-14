@@ -44,6 +44,28 @@ int divide(int A, int B)
         return count;
 }
 
+int divide(int A, int B)
+{
+    if (B == 0)
+        return INT_MAX;
+    if (A == 0)
+        return 0;
+
+    long long dividend = 0;
+    for (int i = sizeof(int) - 1; i >= 0; i--)
+    {
+        long long tempd = (B << i);
+        if (A >= tempd)
+        {
+            A -= tempd;
+            dividend += (1 << i);
+        }
+        if (A == 0)
+            break;
+    }
+    return dividend;
+}
+
 int main()
 {
     int a, b;
