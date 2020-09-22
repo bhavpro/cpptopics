@@ -26,3 +26,31 @@ int maxProfit(vector<int> &prices)
     }
     return maxp;
 }
+
+int maxProfit(vector<int> &prices)
+{
+    int n = prices.size();
+    vector<int> minprice(n), maxprice(n);
+    int minval = INT_MAX;
+    for (int i = 0; i < n; i++)
+    {
+        minval = min(minval, prices[i]);
+        minprice[i] = minval;
+    }
+    int maxval = INT_MIN;
+    for (int i = n - 1; i >= 0; i--)
+    {
+        maxval = max(maxval, prices[i]);
+        maxprice[i] = maxval;
+    }
+
+    int diff = INT_MIN;
+    for (int i = 0; i < n; i++)
+    {
+        int temp = maxprice[i] - minprice[i];
+        if (temp >= 0)
+            diff = max(diff, temp);
+    }
+
+    return diff;
+}
