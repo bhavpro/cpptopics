@@ -4,9 +4,8 @@ using namespace std;
 
 int main()
 {
-    int a = 4;
-    float b;
-    b = ((a+1)/2) * (float)(a + 1)/2;
-    cout << b;
+    int a = 3;
+    cout << a > 3 ? 42 : 66;
+
     return 0;
 }
