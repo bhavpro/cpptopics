@@ -16,13 +16,14 @@ int lrs(string s)
             else if (i == j)
                 dp[i][j] = dp[i - 1][j];
             else if (s[i - 1] == s[j - 1])
-                dp[i][j] = dp[i - 1][j - 1] + 1;
+                dp[i][j] = max(dp[i - 1][j - 1] + 1, max(dp[i - 1][j], dp[i][j - 1]));
             else
                 dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
         }
     }
     return dp[n][n];
 }
+
 int main()
 {
     string s;
