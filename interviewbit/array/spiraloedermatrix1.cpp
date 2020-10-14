@@ -12,7 +12,7 @@ vector<int> spiralOrder(const vector<vector<int>> &A)
     int dir = 0;
     while (t <= b && l <= r)
     {
-        if (dir == 0)
+        if (dir == 0) // right move at top row
         {
             for (int i = l; i <= r; i++)
             {
@@ -22,7 +22,7 @@ vector<int> spiralOrder(const vector<vector<int>> &A)
             dir++;
             continue;
         }
-        if (dir == 1)
+        if (dir == 1) // down move at right column
         {
             for (int i = t; i <= b; i++)
             {
@@ -34,7 +34,7 @@ vector<int> spiralOrder(const vector<vector<int>> &A)
         }
         if (dir == 2)
         {
-            for (int i = r; i >= l; i--)
+            for (int i = r; i >= l; i--) // left move at bottom row
             {
                 ans.push_back(A[b][i]);
             }
@@ -42,7 +42,7 @@ vector<int> spiralOrder(const vector<vector<int>> &A)
             dir++;
             continue;
         }
-        for (int i = b; i >= t; i--)
+        for (int i = b; i >= t; i--) //up move at left column
         {
             ans.push_back(A[i][l]);
         }
