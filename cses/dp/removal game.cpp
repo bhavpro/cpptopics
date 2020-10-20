@@ -2,6 +2,8 @@
 
 using namespace std;
 
+#define ll long long
+
 template <class T>
 vector<vector<T>> _2darray(int r, int c)
 {
@@ -10,7 +12,7 @@ vector<vector<T>> _2darray(int r, int c)
 
 int maxscore(vector<int> a, int n)
 {
-    auto dp = _2darray<pair<int, int>>(n, n);
+    auto dp = _2darray<pair<ll, ll>>(n, n);
     bool fp = n & 1;
 
     for (int k = 0; k < n; k++)
@@ -27,14 +29,14 @@ int maxscore(vector<int> a, int n)
             {
                 if (fp == true)
                 {
-                    pair<int, int> temp1 = {dp[i][j - 1].first + a[j], dp[i][j - 1].second};
-                    pair<int, int> temp2 = {dp[i + 1][j].first + a[i], dp[i + 1][j].second};
+                    pair<ll, ll> temp1 = {dp[i][j - 1].first + a[j], dp[i][j - 1].second};
+                    pair<ll, ll> temp2 = {dp[i + 1][j].first + a[i], dp[i + 1][j].second};
                     dp[i][j] = temp1.first > temp2.first ? temp1 : temp2;
                 }
                 else
                 {
-                    pair<int, int> temp1 = {dp[i][j - 1].first, a[j] + dp[i][j - 1].second};
-                    pair<int, int> temp2 = {dp[i + 1][j].first, a[i] + dp[i + 1][j].second};
+                    pair<ll, ll> temp1 = {dp[i][j - 1].first, a[j] + dp[i][j - 1].second};
+                    pair<ll, ll> temp2 = {dp[i + 1][j].first, a[i] + dp[i + 1][j].second};
                     dp[i][j] = temp1.second > temp2.second ? temp1 : temp2;
                 }
             }
