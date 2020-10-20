@@ -160,11 +160,19 @@ void graph::allpaths(int s, int d)
 
 set<pair<int, string>> multisolver(graph &g, int s, int d, unordered_map<int, bool> &vis)
 {
+    set<pair<int, string>> ans;
+    stringstream ss;
+    ss << d;
+    string cur = ss.str();
     // base
+    if (s == d)
+    {
+        ans.insert({0, cur});
+        return ans;
+    }
 
     // rec
 
-    set<pair<int, string>> ans;
     for (pair<int, int> p : g.adj[d])
     {
         if (!vis[p.first])
@@ -172,12 +180,12 @@ set<pair<int, string>> multisolver(graph &g, int s, int d, unordered_map<int, bo
             vis[p.first] = true;
             auto sets = multisolver(g, s, p.first, vis);
             vis[p.first] = false;
+
             for (auto beg = sets.begin(); beg != sets.end(); beg++)
-            {
-                
-            }
+                ans.insert({beg->first + p.second, beg->second + cur});
         }
     }
+    return ans;
 }
 
 int main()
@@ -197,6 +205,21 @@ int main()
     cin >> st >> en >> val >> nth;
     unordered_map<int, bool> vis;
     vis[en] = true;
-    multisolver(g, st, en, vis);
+    set<pair<int, string>> s = multisolver(g, st, en, vis);
+    cout << s.begin()->second << " --> " << s.begin()->first << "\n";
+    cout << prev(s.end())->second << " --> " << prev(s.end())->first << "\n";
+    auto it1 = s.begin();
+    while (it1 != s.end() && it1->first <= val)
+        it1++;
+    auto it2 = it1;
+    it1--;
+    it1--;
+    cout << it1->second << " --> " << it1->first << "\n";
+    cout << it2->second << " --> " << it2->first << "\n";
+    it1 = s.begin();
+    for (int i = 0; i < nth; i++)
+        it1++;
+    it1--;
+    cout << it1->second << " --> " << it1->first << "\n";
     return 0;
 }
