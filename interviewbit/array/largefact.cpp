@@ -14,7 +14,7 @@ public:
 
 large::large()
 {
-    num.push_back(1);
+    num.push_back(0);
 }
 
 void large::mul(int a)
