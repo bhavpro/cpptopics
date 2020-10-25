@@ -2,6 +2,21 @@
 
 using namespace std;
 
+#define triplet pair<int, pair<T, T>>
+#define source second.first
+#define dest second.second
+#define wt first
+
+template <class T>
+triplet make_trip(T s, T d, int w)
+{
+    triplet temp;
+    temp.source = s;
+    temp.dest = d;
+    temp.wt = w;
+    return temp;
+}
+
 template <class T>
 class graph
 {
@@ -12,6 +27,9 @@ public:
     void addedge(T, T, int w = 0, bool bidir = true);
     vector<vector<T>> ccomp();
     int dijkstra(T s, T d);
+    int minspantreelengthprims();
+    bool isbipartitedfs();
+    bool isbipartitebfs();
 };
 
 //******************
@@ -91,11 +109,112 @@ int graph<T>::dijkstra(T s, T d)
     return dist[d];
 }
 
+template <class T>
+int graph<T>::minspantreelengthprims()
+{
+    int dist = 0;
+    unordered_map<T, bool> vis;
+    for (pair<T, list<pair<T, int>>> s : adj)
+    {
+        if (!vis[s.first])
+        {
+            priority_queue<triplet, vector<triplet>, greater<triplet>> minheap;
+            minheap.push(make_trip(s.first, s.first, 0));
+            while (!minheap.empty())
+            {
+                triplet f = minheap.top();
+                minheap.pop();
+                T par = f.dest;
+                if (!vis[par])
+                {
+                    vis[par] = true;
+                    dist += f.wt;
+                    for (pair<T, int> ch : adj[par])
+                        if (!vis[ch.first])
+                            minheap.push(make_trip(par, ch.first, ch.second));
+                }
+            }
+        }
+    }
+    return dist;
+}
+
+template <class T>
+bool graph<T>::isbipartitedfs()
+{
+    unordered_map<T, int> vis;
+    stack<T> s;
+    for (pair<T, list<pair<T, int>>> p : adj)
+    {
+        if (!vis[p.first])
+        {
+            s.push(p.first);
+            vis[p.first] = 1;
+            // dfs
+            while (!s.empty())
+            {
+                T par = s.top();
+                s.pop();
+                for (pair<T, int> ele : adj[par])
+                {
+                    T ch = ele.first;
+                    if (!vis[ch])
+                    {
+                        vis[ch] = (vis[par] % 2) + 1;
+                        s.push(ch);
+                    }
+                    else if (vis[ch] != ((vis[par] % 2) + 1))
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            // dfs end
+        }
+    }
+    return true;
+}
+
+template <class T>
+bool graph<T>::isbipartitebfs()
+{
+    unordered_map<T, int> col;
+    queue<T> q;
+
+    for (pair<T, list<pair<T, int>>> p : adj)
+        if (!col[p.first])
+        {
+            col[p.first] = 1;
+            q.push(p.first);
+            while (!q.empty())
+            {
+                T par = q.front();
+                q.pop();
+                for (pair<T, int> ele : adj[par])
+                {
+                    T ch = ele.first;
+                    if (!col[ch])
+                    {
+                        col[ch] = (col[par] % 2) + 1;
+                        q.push(ch);
+                    }
+                    else
+                    {
+                        if ((col[par] % 2 + 1) != col[ch])
+                            return false;
+                    }
+                }
+            }
+        }
+    return true;
+}
+
 //######################
 
 int main()
 {
-    freopen("input.txt", "r", stdin);
+    //freopen("input.txt", "r", stdin);
     graph<int> g;
     int v, e;
     cin >> v >> e;
@@ -106,6 +225,6 @@ int main()
         cin >> a >> b >> w;
         g.addedge(a, b, w);
     }
-    cout << g.dijkstra(3, 6);
+    cout << g.isbipartitedfs();
     return 0;
 }
