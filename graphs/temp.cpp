@@ -24,7 +24,8 @@ int solution(vector<int> &A, vector<int> &B, int N)
 
 int main()
 {
-    string s;
-    cin >> s;
-    cout << solution(s);
+    unordered_map<int,int>a;
+    a[0]++;
+    a[1]++;
+    cout << a[1];
 }

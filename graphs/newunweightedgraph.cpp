@@ -30,6 +30,12 @@ public:
     int minspantreelengthprims();
     bool isbipartitedfs();
     bool isbipartitebfs();
+    void toposort();
+    void toposortdfs(unordered_map<T, bool> &, T);
+    void toposortbfs();
+    bool iscyclicudbfs();
+    bool iscyclicddfs();
+    bool iscyclicddfshelper(unordered_map<T, bool> &, int);
 };
 
 //******************
@@ -210,11 +216,97 @@ bool graph<T>::isbipartitebfs()
     return true;
 }
 
+template <class T>
+void graph<T>::toposortdfs(unordered_map<T, bool> &vis, T ele)
+{
+    vis[ele] = true;
+    for (pair<T, int> ch : adj[ele])
+        if (!vis[ch.first])
+            toposortdfs(vis, ch.first);
+    cout << ele << "-->";
+}
+
+template <class T>
+void graph<T>::toposort()
+{
+    unordered_map<T, bool> vis;
+    for (pair<T, list<pair<T, int>>> ele : adj)
+    {
+        if (!vis[ele.first])
+            toposortdfs(vis, ele.first);
+    }
+}
+
+template <class T>
+void graph<T>::toposortbfs()
+{
+    unordered_map<T, int> indegree;
+    for (auto ele : adj)
+    {
+        if (!indegree[ele.first])
+            indegree[ele.first] = 0;
+        for (pair<T, int> ch : adj[ele.first])
+            indegree[ch.first]++;
+    }
+    queue<T> q;
+    for (pair<T, int> p : indegree)
+        if (p.second == 0)
+            q.push(p.first);
+    while (!q.empty())
+    {
+        T cur = q.front();
+        cout << cur << "-->";
+        q.pop();
+        for (pair<T, int> p : adj[cur])
+        {
+            T ch = p.first;
+            indegree[ch]--;
+            if (!indegree[ch])
+                q.push(ch);
+        }
+    }
+}
+
+template <class T>
+bool graph<T>::iscyclicudbfs()
+{
+}
+
+template <class T>
+bool graph<T>::iscyclicddfs()
+{
+    unordered_map<T, bool> vis;
+    for (auto ele : adj)
+        if (!vis[ele.first] && iscyclicddfshelper(vis, ele.first))
+            return true;
+    return false;
+}
+
+template <class T>
+bool graph<T>::iscyclicddfshelper(unordered_map<T, bool> &vis, int cur)
+{
+    static unordered_map<T, bool> being;
+    if (being[cur])
+        return true;
+
+    being[cur] = true;
+    vis[cur] = true;
+    for (pair<T, int> ch : adj[cur])
+    {
+        if (!vis[ch.first] && iscyclicddfshelper(vis, ch.first))
+            return true;
+        else if (being[ch.first])
+            return true;
+    }
+    being[cur] = false;
+    return false;
+}
+
 //######################
 
 int main()
 {
-    //freopen("input.txt", "r", stdin);
+    freopen("input.txt", "r", stdin);
     graph<int> g;
     int v, e;
     cin >> v >> e;
@@ -223,8 +315,8 @@ int main()
     {
         int a, b, w;
         cin >> a >> b >> w;
-        g.addedge(a, b, w);
+        g.addedge(a, b, 0, false);
     }
-    cout << g.isbipartitedfs();
+    cout << g.iscyclicddfs();
     return 0;
 }
