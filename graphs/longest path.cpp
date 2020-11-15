@@ -4,7 +4,6 @@ using namespace std;
 
 int lp(vector<vector<int>> &g, unordered_map<int, int> &len, int cur)
 {
-    // rec
     int length = 0;
     for (int ch : g[cur])
     {
@@ -22,11 +21,11 @@ int lp(vector<vector<int>> &g, unordered_map<int, int> &len, int cur)
     return length;
 }
 
-int rec(vector<vector<int>> g)
+int rec(vector<vector<int>> &g)
 {
     int lnst = 0;
     unordered_map<int, int> len;
-    for (int i = 1; i <= g.size(); i++)
+    for (int i = 1; i < g.size(); i++)
     {
         if (!len[i])
             lnst = max(lnst, lp(g, len, i));
@@ -36,6 +35,7 @@ int rec(vector<vector<int>> g)
 
 int main()
 {
+   // freopen("gin.txt", "r", stdin);
     int n, m;
     cin >> n >> m;
     vector<vector<int>> g(n + 1);
