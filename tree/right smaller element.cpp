@@ -82,7 +82,7 @@ void bst::recins(int val, node *head, node *par, bool left, int &small)
 
 int main()
 {
-    int arr[] = {8, 5, 11, -1, 3, 4, 2};
+    int arr[] = {5, 9, 7, 8, 3, 4, 2};
     int n = sizeof(arr) / sizeof(int);
 
     int *ans = new int[n];
