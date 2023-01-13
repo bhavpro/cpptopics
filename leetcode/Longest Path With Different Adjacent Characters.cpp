@@ -1,5 +1,6 @@
 #include <string>
 #include <vector>
+#include <iostream>
 
 using namespace std;
 
@@ -51,8 +52,17 @@ public:
     int longestPath(vector<int> &parent, string s)
     {
         vector<vector<int>> child(parent.size());
-        for (int i = 0; i < parent.size(); i++)
+        for (int i = 1; i < parent.size(); i++)
             child[parent[i]].push_back(i);
-        return lp(child, s).second;
+        return lp(child, s).second + 1;
     }
 };
+
+int main()
+{
+    vector<int> p = {-1, 0, 0, 1, 1, 2};
+    string s = "abacbe";
+    Solution a;
+    cout << a.longestPath(p, s);
+    return 0;
+}
