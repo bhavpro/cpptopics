@@ -13,14 +13,11 @@ int main()
     arr[0] = -1;
     arr[1] = 0;
 
-    for (int i = 1; i < n; i++)
+    for (int i = 2; i <= n; i++)
     {
-        if (arr[i + 1] == 0)
-            arr[i + 1] = arr[i] + 1;
-        if ((i << 1) <= n && arr[i << 1] == 0)
-            arr[i << 1] = arr[i] + 1;
-        if ((i * 3) <= n && arr[i * 3] == 0)
-            arr[i * 3] = arr[i] + 1;
+        int a = i % 2 == 0 ? arr[i >> 1] : 1e9;
+        int b = i % 3 == 0 ? arr[i / 3] : 1e9;
+        arr[i] = min(min(a, b), arr[i - 1]) + 1;
     }
 
     cout << arr[n];
